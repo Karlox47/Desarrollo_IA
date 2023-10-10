@@ -3,9 +3,11 @@ from tkinter import Tk, Label, Button, StringVar, Entry, messagebox, simpledialo
 
 class CrudApp:
     def __init__(self, root):
+        # Configuración de la ventana principal
         self.root = root
         self.root.title("IA-App")
 
+        # Conexión a la base de datos MySQL
         self.connection = mysql.connector.connect(
             host='localhost',
             database='app_ia',
@@ -13,17 +15,21 @@ class CrudApp:
             password=''
         )
 
+        # Crear los elementos de la interfaz gráfica
         self.create_widgets()
 
     def create_widgets(self):
+        # Etiqueta principal
         self.label = Label(self.root, text="LOGIN - CRUD", font=("Tahoma", 16))
         self.label.grid(row=0, column=0, columnspan=2, pady=10)
 
+        # Variables para almacenar la entrada del usuario
         self.nombres_var = StringVar()
         self.apellidos_var = StringVar()
         self.correo_var = StringVar()
         self.contrasena_var = StringVar()
 
+        # Entradas y etiquetas para Nombres, Apellidos, Correo y Contraseña
         Label(self.root, text="Nombres:").grid(row=1, column=0, sticky="e", padx=10, pady=5)
         Entry(self.root, textvariable=self.nombres_var).grid(row=1, column=1, padx=10, pady=5)
 
@@ -36,25 +42,29 @@ class CrudApp:
         Label(self.root, text="Contraseña:").grid(row=4, column=0, sticky="e", padx=10, pady=5)
         Entry(self.root, textvariable=self.contrasena_var, show="*").grid(row=4, column=1, padx=10, pady=5)
 
+        # Botones para las operaciones CRUD
         Button(self.root, text="Insertar", command=self.insertar).grid(row=5, column=0, columnspan=2, pady=10)
         Button(self.root, text="Seleccionar", command=self.seleccionar).grid(row=6, column=0, columnspan=2, pady=10)
         Button(self.root, text="Actualizar", command=self.actualizar).grid(row=7, column=0, columnspan=2, pady=10)
         Button(self.root, text="Eliminar", command=self.eliminar).grid(row=8, column=0, columnspan=2, pady=10)
 
     def validar_letras(self, input_text):
+        # Función para validar que una cadena contenga solo letras
         return input_text.isalpha()
 
-    #CRUD => Create Read Update Delete
+    # CRUD => Create Read Update Delete
 
     def insertar(self):
+        # Función para insertar un nuevo registro en la base de datos
         nombres = self.nombres_var.get()
         apellidos = self.apellidos_var.get()
         correo = self.correo_var.get()
         contrasena = self.contrasena_var.get()
 
+        # Validar que Nombres y Apellidos contengan solo letras
         if self.validar_letras(nombres) and self.validar_letras(apellidos):
             cursor = self.connection.cursor()
-            sql_insert = "INSERT INTO usuarios (nombres, apellidos,correo, contraseña) VALUES (%s, %s, %s, %s)"
+            sql_insert = "INSERT INTO usuarios (nombres, apellidos, correo, contraseña) VALUES (%s, %s, %s, %s)"
             cursor.execute(sql_insert, (nombres, apellidos, correo, contrasena))
             self.connection.commit()
             messagebox.showinfo("Éxito", "Registro insertado!")
@@ -62,6 +72,7 @@ class CrudApp:
             messagebox.showwarning("Advertencia", "Los campos de Nombres y Apellidos deben contener solo letras.")
 
     def seleccionar(self):
+        # Función para seleccionar y mostrar todos los registros de la base de datos
         cursor = self.connection.cursor()
         sql_select = "SELECT * FROM usuarios"
         cursor.execute(sql_select)
@@ -74,6 +85,7 @@ class CrudApp:
         messagebox.showinfo("Usuarios", result)
 
     def actualizar(self):
+        # Función para actualizar un registro existente en la base de datos
         idusuario = simpledialog.askinteger("Actualizar Usuario", "Ingrese el ID del usuario a actualizar:", parent=self.root)
         if idusuario is not None:
             nuevos_nombres = simpledialog.askstring("Actualizar Usuario", "Nuevos Nombres:", parent=self.root)
@@ -88,6 +100,7 @@ class CrudApp:
                 messagebox.showwarning("Advertencia", "Los campos de Nombres y Apellidos deben contener solo letras.")
 
     def eliminar(self):
+        # Función para eliminar un registro de la base de datos
         id_usuario = simpledialog.askinteger("Eliminar Usuario", "Ingrese el ID del usuario que desea eliminar:")
         if id_usuario is not None:
             cursor = self.connection.cursor()
