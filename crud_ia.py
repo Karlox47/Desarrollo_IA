@@ -2,7 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 import getpass  # Para ocultar la contraseña al ingresarla
 
-class CrudApp:
+class IApp:
     def __init__(self):
         # Conexión a la base de datos MySQL
         self.connection = self.connect_to_database()
@@ -26,27 +26,35 @@ class CrudApp:
         if self.connection.is_connected():
             self.connection.close()
             print("Conexión cerrada")
-
-    # CRUD => Create Read Update Delete
-
+            
+            
+            
+#===============================================================================================================================================================================
+                                                                #REALIZANDO UN CRUD => CREATE READ UPDATE DELETE
+#===============================================================================================================================================================================
+    
+    
+    
+    # Crear usuarios
     def insertar(self):
-        # Función para insertar un nuevo registro en la base de datos
         nombres = input("Nombres: ")
         apellidos = input("Apellidos: ")
         correo = input("Correo: ")
-        contrasena = getpass.getpass("Contraseña: ")  # Para ocultar la contraseña
+        contrasena = getpass.getpass("Contraseña: ")
 
         try:
             cursor = self.connection.cursor()
             sql_insert = "INSERT INTO usuarios (nombres, apellidos, correo, contraseña) VALUES (%s, %s, %s, %s)"
             cursor.execute(sql_insert, (nombres, apellidos, correo, contrasena))
             self.connection.commit()
-            print("Registro insertado!")
+            print("Usuario creado jaaa!!!")
         except Error as e:
-            print(f"Error al insertar: {e}")
+            print(f"Error al crear: {e}")
 
+
+
+    # Mostrar todos los usuarios
     def seleccionar(self):
-        # Función para seleccionar y mostrar todos los registros de la base de datos
         try:
             cursor = self.connection.cursor()
             sql_select = "SELECT * FROM usuarios"
@@ -56,33 +64,37 @@ class CrudApp:
             for row in records:
                 print(f"ID = {row[0]}, Nombres = {row[1]}, Apellidos = {row[2]}, Correo = {row[3]}, Contraseña = {row[4]}\n")
         except Error as e:
-            print(f"Error al seleccionar: {e}")
+            print(f"Error al mostrar: {e}")
 
+
+
+    # Actualizar usuarios
     def actualizar(self):
-        # Función para actualizar un registro existente en la base de datos
-        idusuario = input("Ingrese el ID del usuario a actualizar: ")
+        idusuario = input("Ingrese el ID del usuario para actualizar: ")
         try:
             cursor = self.connection.cursor()
             cursor.execute(f"SELECT * FROM usuarios WHERE idusuarios = {idusuario}")
             user_data = cursor.fetchone()
 
             if user_data:
-                nuevos_nombres = input("Nuevos Nombres: ")
-                nuevos_apellidos = input("Nuevos Apellidos: ")
-                nuevo_correo = input("Nuevo Correo: ")
-                nueva_contrasena = input("Nueva Contraseña: ")
+                nuevos_nombres = input("Actualice Nombres: ")
+                nuevos_apellidos = input("Actualice Apellidos: ")
+                nuevo_correo = input("Actualice Correo: ")
+                nueva_contrasena = input("Actualice Contraseña: ")
 
                 sql_update = "UPDATE usuarios SET nombres = %s, apellidos = %s, correo = %s, contraseña = %s  WHERE idusuarios = %s"
                 cursor.execute(sql_update, (nuevos_nombres, nuevos_apellidos, nuevo_correo, nueva_contrasena, idusuario))
                 self.connection.commit()
-                print("Registro actualizado!")
+                print("Se actualizó con éxito.")
             else:
                 print(f"No se encontró ningún usuario con ID {idusuario}")
         except Error as e:
             print(f"Error al actualizar: {e}")
 
+
+
+    # Eliminar usuario por ID
     def eliminar(self):
-        # Función para eliminar un registro de la base de datos
         id_usuario = input("Ingrese el ID del usuario que desea eliminar: ")
         try:
             cursor = self.connection.cursor()
@@ -93,14 +105,14 @@ class CrudApp:
                 sql_delete = "DELETE FROM usuarios WHERE idusuarios = %s"
                 cursor.execute(sql_delete, (id_usuario,))
                 self.connection.commit()
-                print("Registro eliminado!")
+                print("Usuario eliminado.")
             else:
                 print(f"No se encontró ningún usuario con ID {id_usuario}")
         except Error as e:
             print(f"Error al eliminar: {e}")
 
 if __name__ == "__main__":
-    app = CrudApp()
+    app = IApp()
 
     while True:
         print("\nMenu:")
