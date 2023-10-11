@@ -2,7 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 import getpass  # Para ocultar la contraseña al ingresarla
 
-class IApp:
+class CrudApp:
     def __init__(self):
         # Conexión a la base de datos MySQL
         self.connection = self.connect_to_database()
@@ -27,6 +27,17 @@ class IApp:
             self.connection.close()
             print("Conexión cerrada")
             
+    def obtener_usuario_por_correo(self, correo):
+        try:
+            cursor = self.connection.cursor()
+            sql_select = "SELECT * FROM usuarios WHERE correo = %s"
+            cursor.execute(sql_select, (correo,))
+            user_data = cursor.fetchone()
+            return user_data
+        except Error as e:
+            print(f"Error al obtener información del usuario: {e}")
+            return None
+            
             
             
 #===============================================================================================================================================================================
@@ -36,12 +47,7 @@ class IApp:
     
     
     # Crear usuarios
-    def insertar(self):
-        nombres = input("Nombres: ")
-        apellidos = input("Apellidos: ")
-        correo = input("Correo: ")
-        contrasena = getpass.getpass("Contraseña: ")
-
+    def insertar(self, nombres, apellidos, correo, contrasena):
         try:
             cursor = self.connection.cursor()
             sql_insert = "INSERT INTO usuarios (nombres, apellidos, correo, contraseña) VALUES (%s, %s, %s, %s)"
@@ -112,7 +118,7 @@ class IApp:
             print(f"Error al eliminar: {e}")
 
 if __name__ == "__main__":
-    app = IApp()
+    app = CrudApp()
 
     while True:
         print("\nMenu:")
