@@ -7,18 +7,34 @@ class LoginApp:
         self.root = root
         self.root.title("Inicio de Sesión")
 
+        # Establecer el tamaño de la ventana principal
+        self.root.geometry("300x350")
+
         self.crud_instance = crud_instance
 
-        tk.Label(root, text="Correo:").grid(row=0, column=0)
-        tk.Label(root, text="Contraseña:").grid(row=1, column=0)
+        # Crear un marco para centrar los elementos y agregar espacio
+        frame = tk.Frame(root, padx=20, pady=10)
+        frame.pack(expand=True, fill='both')
 
-        self.correo_entry = tk.Entry(root)
-        self.contrasena_entry = tk.Entry(root, show='*')
-        self.correo_entry.grid(row=0, column=1)
-        self.contrasena_entry.grid(row=1, column=1)
+        tk.Label(frame, text="Correo:").grid(row=0, column=0, pady=5, padx=5, sticky='e')
+        tk.Label(frame, text="Contraseña:").grid(row=1, column=0, pady=5, padx=5, sticky='e')
 
-        tk.Button(root, text="Iniciar Sesión", command=self.iniciar_sesion).grid(row=2, column=0, columnspan=2, pady=5)
-        tk.Button(root, text="Registrarse", command=self.mostrar_registro).grid(row=3, column=0, columnspan=2)
+        self.correo_entry = tk.Entry(frame)
+        self.contrasena_entry = tk.Entry(frame, show='*')
+        self.correo_entry.grid(row=0, column=1, pady=5, padx=5, sticky='w')
+        self.contrasena_entry.grid(row=1, column=1, pady=5, padx=5, sticky='w')
+        
+        #Botones para Iniciar sesión y Registrarse
+        tk.Button(frame, text="Iniciar Sesión", command=self.iniciar_sesion).grid(row=2, column=0, columnspan=2, pady=5)
+        tk.Button(frame, text="Registrarse", command=self.mostrar_registro).grid(row=3, column=0, columnspan=2, pady=5)
+
+        # Ajustar las columnas y filas para que el contenido se expanda
+        frame.columnconfigure(0, weight=1)
+        frame.columnconfigure(1, weight=1)
+        frame.rowconfigure(0, weight=1)
+        frame.rowconfigure(1, weight=1)
+        frame.rowconfigure(2, weight=1)
+        frame.rowconfigure(3, weight=1)
 
     def iniciar_sesion(self):
         correo = self.correo_entry.get()
@@ -36,23 +52,38 @@ class LoginApp:
         registro_window = tk.Toplevel(self.root)
         registro_window.title("Registrarse")
 
-        # Crear etiquetas y campos de entrada para el registro
-        tk.Label(registro_window, text="Nombres:").grid(row=0, column=0)
-        tk.Label(registro_window, text="Apellidos:").grid(row=1, column=0)
-        tk.Label(registro_window, text="Correo:").grid(row=2, column=0)
-        tk.Label(registro_window, text="Contraseña:").grid(row=3, column=0)
+        # Establecer el tamaño de la ventana de registro
+        registro_window.geometry("300x350")
 
-        nombres_entry = tk.Entry(registro_window)
-        apellidos_entry = tk.Entry(registro_window)
-        correo_entry = tk.Entry(registro_window)
-        contrasena_entry = tk.Entry(registro_window, show='*')
+        # Crear un marco para centrar los elementos y agregar espacio
+        frame = tk.Frame(registro_window, padx=20, pady=10)
+        frame.pack(expand=True, fill='both')
 
-        nombres_entry.grid(row=0, column=1)
-        apellidos_entry.grid(row=1, column=1)
-        correo_entry.grid(row=2, column=1)
-        contrasena_entry.grid(row=3, column=1)
+        tk.Label(frame, text="Nombres:").grid(row=0, column=0, pady=5, padx=5, sticky='e')
+        tk.Label(frame, text="Apellidos:").grid(row=1, column=0, pady=5, padx=5, sticky='e')
+        tk.Label(frame, text="Correo:").grid(row=2, column=0, pady=5, padx=5, sticky='e')
+        tk.Label(frame, text="Contraseña:").grid(row=3, column=0, pady=5, padx=5, sticky='e')
 
-        tk.Button(registro_window, text="Registrar", command=lambda: self.registrarse(nombres_entry, apellidos_entry, correo_entry, contrasena_entry)).grid(row=4, column=0, columnspan=2, pady=5)
+        nombres_entry = tk.Entry(frame)
+        apellidos_entry = tk.Entry(frame)
+        correo_entry = tk.Entry(frame)
+        contrasena_entry = tk.Entry(frame, show='*')
+
+        nombres_entry.grid(row=0, column=1, pady=5, padx=5, sticky='w')
+        apellidos_entry.grid(row=1, column=1, pady=5, padx=5, sticky='w')
+        correo_entry.grid(row=2, column=1, pady=5, padx=5, sticky='w')
+        contrasena_entry.grid(row=3, column=1, pady=5, padx=5, sticky='w')
+
+        tk.Button(frame, text="Registrar", command=lambda: self.registrarse(nombres_entry, apellidos_entry, correo_entry, contrasena_entry)).grid(row=4, column=0, columnspan=2, pady=5)
+
+        # Ajustar las columnas y filas para que el contenido se expanda
+        frame.columnconfigure(0, weight=1)
+        frame.columnconfigure(1, weight=1)
+        frame.rowconfigure(0, weight=1)
+        frame.rowconfigure(1, weight=1)
+        frame.rowconfigure(2, weight=1)
+        frame.rowconfigure(3, weight=1)
+        frame.rowconfigure(4, weight=1)
 
     def registrarse(self, nombres_entry, apellidos_entry, correo_entry, contrasena_entry):
         nombres = nombres_entry.get()
@@ -60,8 +91,18 @@ class LoginApp:
         correo = correo_entry.get()
         contrasena = contrasena_entry.get()
 
+        if not nombres or not apellidos or not correo or not contrasena:
+            messagebox.showerror("Error de Registro", "Todos los campos deben ser llenados.")
+            return
+
         self.crud_instance.insertar(nombres, apellidos, correo, contrasena)
         messagebox.showinfo("Registro Exitoso", "¡Usuario registrado con éxito!")
+
+
+
+#===============================================================================================================
+                                        #EJECUCIÓN DEL PROGRAMA
+#===============================================================================================================
 
 if __name__ == "__main__":
     menu = tk.Tk()
