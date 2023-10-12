@@ -7,12 +7,12 @@ class LoginApp:
         self.root = root
         self.root.title("Inicio de Sesión")
 
-        # Establecer el tamaño de la ventana principal
+
         self.root.geometry("300x350")
 
         self.crud_instance = crud_instance
 
-        # Crear un marco para centrar los elementos y agregar espacio
+
         frame = tk.Frame(root, padx=20, pady=10)
         frame.pack(expand=True, fill='both')
 
@@ -24,11 +24,11 @@ class LoginApp:
         self.correo_entry.grid(row=0, column=1, pady=5, padx=5, sticky='w')
         self.contrasena_entry.grid(row=1, column=1, pady=5, padx=5, sticky='w')
         
-        #Botones para Iniciar sesión y Registrarse
+
         tk.Button(frame, text="Iniciar Sesión", command=self.iniciar_sesion).grid(row=2, column=0, columnspan=2, pady=5)
         tk.Button(frame, text="Registrarse", command=self.mostrar_registro).grid(row=3, column=0, columnspan=2, pady=5)
 
-        # Ajustar las columnas y filas para que el contenido se expanda
+
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
         frame.rowconfigure(0, weight=1)
@@ -48,14 +48,14 @@ class LoginApp:
             messagebox.showerror("Inicio de Sesión", "Inicio de sesión fallido. Verifica tu correo y contraseña.")
 
     def mostrar_registro(self):
-        # Crear una nueva ventana para el registro
+
         registro_window = tk.Toplevel(self.root)
         registro_window.title("Registrarse")
 
-        # Establecer el tamaño de la ventana de registro
+
         registro_window.geometry("300x350")
 
-        # Crear un marco para centrar los elementos y agregar espacio
+
         frame = tk.Frame(registro_window, padx=20, pady=10)
         frame.pack(expand=True, fill='both')
 
@@ -76,7 +76,7 @@ class LoginApp:
 
         tk.Button(frame, text="Registrar", command=lambda: self.registrarse(nombres_entry, apellidos_entry, correo_entry, contrasena_entry)).grid(row=4, column=0, columnspan=2, pady=5)
 
-        # Ajustar las columnas y filas para que el contenido se expanda
+
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
         frame.rowconfigure(0, weight=1)
