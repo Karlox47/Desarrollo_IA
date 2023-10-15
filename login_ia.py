@@ -85,6 +85,10 @@ class LoginApp:
         frame.rowconfigure(3, weight=1)
         frame.rowconfigure(4, weight=1)
 
+        
+        
+        #registrar usuarios, verificar que se hayan completado todos los campos obligatorios, y muestra mensajes de error o éxito al usuario,
+        
     def registrarse(self, nombres_entry, apellidos_entry, correo_entry, contrasena_entry):
         nombres = nombres_entry.get()
         apellidos = apellidos_entry.get()
