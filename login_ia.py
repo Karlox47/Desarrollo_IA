@@ -6,28 +6,27 @@ class LoginApp:
     def __init__(self, root, crud_instance):
         self.root = root
         self.root.title("Inicio de Sesión")
-
-
         self.root.geometry("300x350")
-
         self.crud_instance = crud_instance
 
+        self.logo_image = tk.PhotoImage(file="images/chatbot.png")
 
         frame = tk.Frame(root, padx=20, pady=10)
         frame.pack(expand=True, fill='both')
 
-        tk.Label(frame, text="Correo:").grid(row=0, column=0, pady=5, padx=5, sticky='e')
-        tk.Label(frame, text="Contraseña:").grid(row=1, column=0, pady=5, padx=5, sticky='e')
+        self.logo_label = tk.Label(frame, image=self.logo_image)
+        self.logo_label.grid(row=0, column=0, columnspan=2, pady=5)
+
+        tk.Label(frame, text="Correo:").grid(row=1, column=0, pady=5, padx=5, sticky='e')
+        tk.Label(frame, text="Contraseña:").grid(row=2, column=0, pady=5, padx=5, sticky='e')
 
         self.correo_entry = tk.Entry(frame)
         self.contrasena_entry = tk.Entry(frame, show='*')
-        self.correo_entry.grid(row=0, column=1, pady=5, padx=5, sticky='w')
-        self.contrasena_entry.grid(row=1, column=1, pady=5, padx=5, sticky='w')
-        
+        self.correo_entry.grid(row=1, column=1, pady=5, padx=5, sticky='w')
+        self.contrasena_entry.grid(row=2, column=1, pady=5, padx=5, sticky='w')
 
-        tk.Button(frame, text="Iniciar Sesión", command=self.iniciar_sesion).grid(row=2, column=0, columnspan=2, pady=5)
-        tk.Button(frame, text="Registrarse", command=self.mostrar_registro).grid(row=3, column=0, columnspan=2, pady=5)
-
+        tk.Button(frame, text="Iniciar Sesión", command=self.iniciar_sesion).grid(row=3, column=0, columnspan=2, pady=5)
+        tk.Button(frame, text="Registrarse", command=self.mostrar_registro).grid(row=4, column=0, columnspan=2, pady=5)
 
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
@@ -35,6 +34,7 @@ class LoginApp:
         frame.rowconfigure(1, weight=1)
         frame.rowconfigure(2, weight=1)
         frame.rowconfigure(3, weight=1)
+        frame.rowconfigure(4, weight=1)
 
     def iniciar_sesion(self):
         correo = self.correo_entry.get()
@@ -48,13 +48,10 @@ class LoginApp:
             messagebox.showerror("Inicio de Sesión", "Inicio de sesión fallido. Verifica tu correo y contraseña.")
 
     def mostrar_registro(self):
-
         registro_window = tk.Toplevel(self.root)
         registro_window.title("Registrarse")
 
-
         registro_window.geometry("300x350")
-
 
         frame = tk.Frame(registro_window, padx=20, pady=10)
         frame.pack(expand=True, fill='both')
@@ -76,7 +73,6 @@ class LoginApp:
 
         tk.Button(frame, text="Registrar", command=lambda: self.registrarse(nombres_entry, apellidos_entry, correo_entry, contrasena_entry)).grid(row=4, column=0, columnspan=2, pady=5)
 
-
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
         frame.rowconfigure(0, weight=1)
@@ -85,10 +81,6 @@ class LoginApp:
         frame.rowconfigure(3, weight=1)
         frame.rowconfigure(4, weight=1)
 
-        
-        
-        #registrar usuarios, verificar que se hayan completado todos los campos obligatorios, y muestra mensajes de error o éxito al usuario,
-        
     def registrarse(self, nombres_entry, apellidos_entry, correo_entry, contrasena_entry):
         nombres = nombres_entry.get()
         apellidos = apellidos_entry.get()
@@ -101,12 +93,6 @@ class LoginApp:
 
         self.crud_instance.insertar(nombres, apellidos, correo, contrasena)
         messagebox.showinfo("Registro Exitoso", "¡Usuario registrado con éxito!")
-
-
-
-#===============================================================================================================
-                                        #EJECUCIÓN DEL PROGRAMA
-#===============================================================================================================
 
 if __name__ == "__main__":
     menu = tk.Tk()
