@@ -56,7 +56,6 @@ class LoginApp:
         frame = tk.Frame(registro_window, padx=20, pady=10)
         frame.pack(expand=True, fill='both')
 
-        # Agrega la imagen a la ventana de registro
         logo_image = tk.PhotoImage(file="images/login2.png")
         logo_label = tk.Label(frame, image=logo_image)
         logo_label.grid(row=0, column=0, columnspan=2, pady=2)
@@ -87,7 +86,6 @@ class LoginApp:
         frame.rowconfigure(4, weight=1)
         frame.rowconfigure(5, weight=1)
 
-        # Es posible que necesites mantener una referencia a la imagen para evitar que sea eliminada por el recolector de basura
         registro_window.logo_image = logo_image
 
     def registrarse(self, nombres_entry, apellidos_entry, correo_entry, contrasena_entry):
