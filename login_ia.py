@@ -49,7 +49,7 @@ class LoginApp:
 
     def mostrar_registro(self):
         registro_window = tk.Toplevel(self.root)
-        registro_window.title("Registrarse")
+        registro_window.title("Registro de Usuario")
 
         registro_window.geometry("450x500")
 
