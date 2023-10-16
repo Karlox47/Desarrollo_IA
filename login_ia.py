@@ -6,10 +6,10 @@ class LoginApp:
     def __init__(self, root, crud_instance):
         self.root = root
         self.root.title("Inicio de Sesión")
-        self.root.geometry("300x350")
+        self.root.geometry("400x350")
         self.crud_instance = crud_instance
 
-        self.logo_image = tk.PhotoImage(file="images/chatbot.png")
+        self.logo_image = tk.PhotoImage(file="images/bot3.png")
 
         frame = tk.Frame(root, padx=20, pady=10)
         frame.pack(expand=True, fill='both')
@@ -51,27 +51,32 @@ class LoginApp:
         registro_window = tk.Toplevel(self.root)
         registro_window.title("Registrarse")
 
-        registro_window.geometry("300x350")
+        registro_window.geometry("450x500")
 
         frame = tk.Frame(registro_window, padx=20, pady=10)
         frame.pack(expand=True, fill='both')
 
-        tk.Label(frame, text="Nombres:").grid(row=0, column=0, pady=5, padx=5, sticky='e')
-        tk.Label(frame, text="Apellidos:").grid(row=1, column=0, pady=5, padx=5, sticky='e')
-        tk.Label(frame, text="Correo:").grid(row=2, column=0, pady=5, padx=5, sticky='e')
-        tk.Label(frame, text="Contraseña:").grid(row=3, column=0, pady=5, padx=5, sticky='e')
+        # Agrega la imagen a la ventana de registro
+        logo_image = tk.PhotoImage(file="images/login2.png")
+        logo_label = tk.Label(frame, image=logo_image)
+        logo_label.grid(row=0, column=0, columnspan=2, pady=2)
+
+        tk.Label(frame, text="Nombres:").grid(row=1, column=0, pady=5, padx=5, sticky='e')
+        tk.Label(frame, text="Apellidos:").grid(row=2, column=0, pady=5, padx=5, sticky='e')
+        tk.Label(frame, text="Correo:").grid(row=3, column=0, pady=5, padx=5, sticky='e')
+        tk.Label(frame, text="Contraseña:").grid(row=4, column=0, pady=5, padx=5, sticky='e')
 
         nombres_entry = tk.Entry(frame)
         apellidos_entry = tk.Entry(frame)
         correo_entry = tk.Entry(frame)
         contrasena_entry = tk.Entry(frame, show='*')
 
-        nombres_entry.grid(row=0, column=1, pady=5, padx=5, sticky='w')
-        apellidos_entry.grid(row=1, column=1, pady=5, padx=5, sticky='w')
-        correo_entry.grid(row=2, column=1, pady=5, padx=5, sticky='w')
-        contrasena_entry.grid(row=3, column=1, pady=5, padx=5, sticky='w')
+        nombres_entry.grid(row=1, column=1, pady=5, padx=5, sticky='w')
+        apellidos_entry.grid(row=2, column=1, pady=5, padx=5, sticky='w')
+        correo_entry.grid(row=3, column=1, pady=5, padx=5, sticky='w')
+        contrasena_entry.grid(row=4, column=1, pady=5, padx=5, sticky='w')
 
-        tk.Button(frame, text="Registrar", command=lambda: self.registrarse(nombres_entry, apellidos_entry, correo_entry, contrasena_entry)).grid(row=4, column=0, columnspan=2, pady=5)
+        tk.Button(frame, text="Registrar", command=lambda: self.registrarse(nombres_entry, apellidos_entry, correo_entry, contrasena_entry)).grid(row=5, column=0, columnspan=2, pady=5)
 
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
@@ -80,6 +85,10 @@ class LoginApp:
         frame.rowconfigure(2, weight=1)
         frame.rowconfigure(3, weight=1)
         frame.rowconfigure(4, weight=1)
+        frame.rowconfigure(5, weight=1)
+
+        # Es posible que necesites mantener una referencia a la imagen para evitar que sea eliminada por el recolector de basura
+        registro_window.logo_image = logo_image
 
     def registrarse(self, nombres_entry, apellidos_entry, correo_entry, contrasena_entry):
         nombres = nombres_entry.get()
