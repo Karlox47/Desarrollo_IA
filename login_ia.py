@@ -7,7 +7,7 @@ class LoginApp:
         self.root = root
         self.root.title("Inicio de Sesión")
 
-
+        # es parte de una interfaz  , donde se configura el tamaño inicial de la ventana
         self.root.geometry("300x350")
 
         self.crud_instance = crud_instance
@@ -28,7 +28,7 @@ class LoginApp:
         tk.Button(frame, text="Iniciar Sesión", command=self.iniciar_sesion).grid(row=2, column=0, columnspan=2, pady=5)
         tk.Button(frame, text="Registrarse", command=self.mostrar_registro).grid(row=3, column=0, columnspan=2, pady=5)
 
-
+        # Ajustar las columnas y filas para que el contenido se expanda
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
         frame.rowconfigure(0, weight=1)
@@ -48,11 +48,12 @@ class LoginApp:
             messagebox.showerror("Inicio de Sesión", "Inicio de sesión fallido. Verifica tu correo y contraseña.")
 
     def mostrar_registro(self):
-
+        
+        # creacion de una nueva ventana para el registro
         registro_window = tk.Toplevel(self.root)
         registro_window.title("Registrarse")
 
-
+      # Establece el tamaño de la ventana
         registro_window.geometry("300x350")
 
 
@@ -76,7 +77,7 @@ class LoginApp:
 
         tk.Button(frame, text="Registrar", command=lambda: self.registrarse(nombres_entry, apellidos_entry, correo_entry, contrasena_entry)).grid(row=4, column=0, columnspan=2, pady=5)
 
-
+        # estas configuraciones  aseguran que las filas y columnas  se expandan 
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
         frame.rowconfigure(0, weight=1)
