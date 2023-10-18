@@ -28,7 +28,7 @@ def message_probability(user_message, recognized_words, single_response=False, r
     if has_required_words or single_response:
         return int(percentage * 100)
     else:
-        return 0
+        return 0 
 
 def check_all_messages(message):
     highest_prob = {}
