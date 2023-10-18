@@ -12,7 +12,7 @@ class LoginApp:
         self.registro_window = None
         self.sesion_iniciada = False
         
-        self.logo_image = tk.PhotoImage(file="C:/Users/sihue/Documents/Programacion/Visual-Studio-Code/Pyhton/Desarrollo_IA/images/bot3.png")
+        self.logo_image = tk.PhotoImage(file="F:/Desarrollo_IA/images/bot3.png")
 
         frame = tk.Frame(root, padx=20, pady=10)
         frame.pack(expand=True, fill='both')
