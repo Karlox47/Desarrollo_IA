@@ -106,7 +106,7 @@ class CrudApp:
             cursor = self.connection.cursor()
             cursor.execute(f"SELECT * FROM usuarios WHERE idusuarios = {id_usuario}")
             user_data = cursor.fetchone()
-
+            
             if user_data:
                 sql_delete = "DELETE FROM usuarios WHERE idusuarios = %s"
                 cursor.execute(sql_delete, (id_usuario,))
