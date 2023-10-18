@@ -131,7 +131,12 @@ if __name__ == "__main__":
         choice = input("Ingrese el número de la opción que desea: ")
 
         if choice == "1":
-            app.insertar()
+            nombres = input("Ingrese nombres: ")
+            apellidos = input("Ingrese apellidos: ")
+            correo = input("Ingrese correo: ")
+            contrasena = input("Ingrese contraseña: ")
+            
+            app.insertar(nombres, apellidos, correo, contrasena)
         elif choice == "2":
             app.seleccionar()
         elif choice == "3":
@@ -143,4 +148,4 @@ if __name__ == "__main__":
             print("Saliendo del programa. ¡Hasta luego!")
             break
         else:
-            print("Opción no válida. Intente nuevamente.")
+            print("Opción no válida.")
