@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import scrolledtext
 import re
 import random
 
@@ -12,39 +14,79 @@ def message_probability(user_message, recognized_words, single_response=False, r
 
     for word in user_message:
         if word in recognized_words:
-            message_certainty +=1
+            message_certainty += 1
 
-    percentage = float(message_certainty) / float (len(recognized_words))
+    percentage = float(message_certainty) / float(len(recognized_words))
 
     for word in required_word:
         if word not in user_message:
             has_required_words = False
             break
+
     if has_required_words or single_response:
         return int(percentage * 100)
     else:
         return 0
 
 def check_all_messages(message):
-        highest_prob = {}
+    highest_prob = {}
 
-        def response(bot_response, list_of_words, single_response = False, required_words = []):
-            nonlocal highest_prob
-            highest_prob[bot_response] = message_probability(message, list_of_words, single_response, required_words)
+    def response(bot_response, list_of_words, single_response=False, required_words=[]):
+        nonlocal highest_prob
+        highest_prob[bot_response] = message_probability(message, list_of_words, single_response, required_words)
 
-        response('Hola soy botCertus', ['hola', 'hi', 'saludos', 'buenas'], single_response = True)
-        response('Estoy bien y tu?', ['como', 'estas', 'va', 'vas', 'sientes'], required_words=['como'])
-        response('Siempre a la orden', ['gracias', 'te lo agradezco', 'thanks'], single_response=True)
-        response('Arquitectura y Diseño con IA', ['sexto ciclo', 'sexto', 'cursos de sexto'], single_response=True)
+    response('¡Hola Soy CerBot! ¿En qué puedo ayudarte?', ['hola', 'hi', 'saludos', 'buenas'], single_response=True)
+    response('La próxima clase es el Miercoles [7:00 am - 10:00 am].', ['proxima','clase', 'siguiente', 'horario'], single_response=True)
+    response('Los documentos o archivos del curso están disponibles en la plataforma de "certus".', ['documentos','archivos', 'donde'], single_response=True)
+    response('Puedes encontrar ejemplos de tareas o proyectos anteriores en la plataforma de "Certus".', ['dudas', 'tarea','proyecto','donde'], single_response=True)
+    response('Tu desempeño se evaluará a través de tareas, proyectos, exámenes y participación.', ['evaluacion','evaluar', 'calificación', 'calificar', 'como se evalua'], single_response=True)
+    response('Tus notas las puedes encontrar ingresando al intranet, en la seccion ver mis notas intranet.', ['ver','calificacion', 'notas', 'donde','puedo'], single_response=True)
+    response('Sí, tenemos una comunidad en línea para estudiantes. Únete y participa.', ['grupo',' estudio', 'comunidad','estudiantes', ' unirme','donde'], single_response=True)
+    response('Estamos aquí para apoyarte en el aprendizaje de tu Curso de Inteligencia Artificial. ¡Buena suerte en tus estudios!', ['gracias', 'adios', 'despedida'], single_response=True)
 
-        best_match = max(highest_prob, key=highest_prob.get)
-        #print(highest_prob)
+    best_match = max(highest_prob, key=highest_prob.get)
 
-        return unknown() if highest_prob[best_match] < 1 else best_match
+    return unknown() if highest_prob[best_match] < 1 else best_match
 
 def unknown():
-    response = ['no entendi tu consulta', 'No estoy seguro de lo quieres', 'Disculpa, puedes intentarlo de nuevo?'][random.randrange(3)]
+    response = ['no entendí tu consulta', 'No estoy seguro de lo que quieres', 'Disculpa, ¿puedes intentarlo de nuevo?'][random.randrange(3)]
     return response
 
-while True:
-    print("Bot: " + get_response(input('You: ')))
+def send_message():
+    user_input = user_entry.get()
+    response = get_response(user_input)
+    chat_display.config(state=tk.NORMAL)
+    chat_display.insert(tk.END, f"You: {user_input}\n")
+    chat_display.insert(tk.END, f"Bot: {response}\n")
+    chat_display.config(state=tk.DISABLED)
+    user_entry.delete(0, tk.END)
+
+def clear_chat():
+    chat_display.config(state=tk.NORMAL)
+    chat_display.delete(1.0, tk.END)
+    chat_display.config(state=tk.DISABLED)
+
+def on_enter(event):
+    send_message()
+
+root = tk.Tk()
+root.title("CERTUSBOT")
+
+# Ajusta el tamaño del área de chat
+chat_display = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20)
+chat_display.config(state=tk.DISABLED)
+chat_display.pack()
+
+user_entry = tk.Entry(root, width=60)
+user_entry.pack()
+
+send_button = tk.Button(root, text="Enviar", command=send_message)
+send_button.pack()
+
+clear_button = tk.Button(root, text="Reiniciar", command=clear_chat)
+clear_button.pack()
+
+# Vincula la tecla Enter al evento de enviar el mensaje
+root.bind('<Return>', on_enter)
+
+root.mainloop()
