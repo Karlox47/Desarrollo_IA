@@ -8,15 +8,17 @@ class LoginApp:
         self.root.title("Inicio de Sesión")
         self.root.geometry("400x350")
         self.crud_instance = crud_instance
+        self.registro_window = None
+        self.sesion_iniciada = False
 
-        self.logo_image = tk.PhotoImage(file="images/bot3.png")
+        self.logo_image = tk.PhotoImage(file="C:/Users/sihue/Documents/Programacion/Visual-Studio-Code/Pyhton/Desarrollo_IA/images/bot3.png")
 
         frame = tk.Frame(root, padx=20, pady=10)
         frame.pack(expand=True, fill='both')
-
+        
         self.logo_label = tk.Label(frame, image=self.logo_image)
         self.logo_label.grid(row=0, column=0, columnspan=2, pady=5)
-
+        
         tk.Label(frame, text="Correo:").grid(row=1, column=0, pady=5, padx=5, sticky='e')
         tk.Label(frame, text="Contraseña:").grid(row=2, column=0, pady=5, padx=5, sticky='e')
 
@@ -44,19 +46,22 @@ class LoginApp:
 
         if usuario and usuario[4] == contrasena:
             messagebox.showinfo("Inicio de Sesión", "Inicio de sesión exitoso. ¡Bienvenido!")
+            self.sesion_iniciada = True  
+            self.root.destroy() 
+            self.root.quit()
         else:
-            messagebox.showerror("Inicio de Sesión", "Inicio de sesión fallido. Verifica tu correo y contraseña.")
+            messagebox.showerror("Inicio de Sesión", "Inicio de sesión fallido. Verifica tu correo y contraseña.")         
 
     def mostrar_registro(self):
-        registro_window = tk.Toplevel(self.root)
-        registro_window.title("Registro de Usuario")
+        self.registro_window = tk.Toplevel(self.root)
+        self.registro_window.title("Registro de Usuario")
 
-        registro_window.geometry("450x500")
+        self.registro_window.geometry("450x500")
 
-        frame = tk.Frame(registro_window, padx=20, pady=10)
+        frame = tk.Frame(self.registro_window, padx=20, pady=10)
         frame.pack(expand=True, fill='both')
 
-        logo_image = tk.PhotoImage(file="images/login2.png")
+        logo_image = tk.PhotoImage(file="C:/Users/sihue/Documents/Programacion/Visual-Studio-Code/Pyhton/Desarrollo_IA/images/login2.png")
         logo_label = tk.Label(frame, image=logo_image)
         logo_label.grid(row=0, column=0, columnspan=2, pady=2)
 
@@ -86,7 +91,7 @@ class LoginApp:
         frame.rowconfigure(4, weight=1)
         frame.rowconfigure(5, weight=1)
 
-        registro_window.logo_image = logo_image
+        self.registro_window.logo_image = logo_image
 
     def registrarse(self, nombres_entry, apellidos_entry, correo_entry, contrasena_entry):
         nombres = nombres_entry.get()
@@ -100,6 +105,7 @@ class LoginApp:
 
         self.crud_instance.insertar(nombres, apellidos, correo, contrasena)
         messagebox.showinfo("Registro Exitoso", "¡Usuario registrado con éxito!")
+        self.registro_window.destroy()
 
 if __name__ == "__main__":
     menu = tk.Tk()

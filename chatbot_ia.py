@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import scrolledtext
 import re
 import random
+from login_ia import LoginApp
+from crud_ia import CrudApp
 
 def get_response(user_input):
     split_message = re.split(r'\s|[,:;.?!-_]\s*', user_input.lower())
@@ -57,7 +59,7 @@ def send_message():
     response = get_response(user_input)
     chat_display.config(state=tk.NORMAL)
     chat_display.insert(tk.END, f"You: {user_input}\n")
-    chat_display.insert(tk.END, f"Bot: {response}\n")
+    chat_display.insert(tk.END, f"Cerbot: {response}\n")
     chat_display.config(state=tk.DISABLED)
     user_entry.delete(0, tk.END)
 
@@ -69,24 +71,36 @@ def clear_chat():
 def on_enter(event):
     send_message()
 
-root = tk.Tk()
-root.title("CERTUSBOT")
+def mostrar_ventana_chat():
+    root.title("CERBOT")
 
-# Ajusta el tamaño del área de chat
-chat_display = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20)
-chat_display.config(state=tk.DISABLED)
-chat_display.pack()
+    # Ajusta el tamaño del área de chat
+    chat_display.config(state=tk.DISABLED)
+    chat_display.pack()
 
-user_entry = tk.Entry(root, width=60)
-user_entry.pack()
+    user_entry.pack()
 
-send_button = tk.Button(root, text="Enviar", command=send_message)
-send_button.pack()
+    send_button = tk.Button(root, text="Enviar", command=send_message)
+    send_button.pack()
 
-clear_button = tk.Button(root, text="Reiniciar", command=clear_chat)
-clear_button.pack()
+    clear_button = tk.Button(root, text="Reiniciar", command=clear_chat)
+    clear_button.pack()
 
-# Vincula la tecla Enter al evento de enviar el mensaje
-root.bind('<Return>', on_enter)
+    # Vincula la tecla Enter al evento de enviar el mensaje
+    root.bind('<Return>', on_enter)
 
-root.mainloop()
+    root.mainloop()
+
+if __name__ == "__main__":
+    crud_app = CrudApp()
+    login_app = LoginApp(tk.Tk(), crud_app)
+    login_app.root.mainloop()
+    
+    if login_app.sesion_iniciada:          
+        root = tk.Tk()
+        chat_display = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20)
+        user_entry = tk.Entry(root, width=60)
+        send_button = tk.Button(root, text="Enviar", command=send_message)
+        clear_button = tk.Button(root, text="Reiniciar", command=clear_chat)
+        
+        mostrar_ventana_chat()
