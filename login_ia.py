@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from crud_ia import CrudApp
-
+#====================Crear una instancia de la clase LoginApp====================
 class LoginApp:
     def __init__(self, root, crud_instance):
         self.root = root
@@ -11,7 +11,7 @@ class LoginApp:
 
         self.registro_window = None
         self.sesion_iniciada = False
-        
+#===============Configuramos la interfaz de Inicio de Sesión==============
         self.logo_image = tk.PhotoImage(file="F:/Desarrollo_IA/images/bot3.png")
 
         frame = tk.Frame(root, padx=20, pady=10)
@@ -38,7 +38,7 @@ class LoginApp:
         frame.rowconfigure(2, weight=1)
         frame.rowconfigure(3, weight=1)
         frame.rowconfigure(4, weight=1)
-
+#===================Metodo iniciar sesión=======================
     def iniciar_sesion(self):
         correo = self.correo_entry.get()
         contrasena = self.contrasena_entry.get()
@@ -49,7 +49,7 @@ class LoginApp:
             messagebox.showinfo("Inicio de Sesión", "Inicio de sesión exitoso. ¡Bienvenido!")
         else:
             messagebox.showerror("Inicio de Sesión", "Inicio de sesión fallido. Verifica tu correo y contraseña.")
-
+#===================Metodo registro=====================
     def mostrar_registro(self):
         registro_window = tk.Toplevel(self.root)
         registro_window.title("Registro de Usuario")
@@ -90,7 +90,7 @@ class LoginApp:
         frame.rowconfigure(5, weight=1)
 
         registro_window.logo_image = logo_image
-
+#===================Metodo REGISTRARSE=====================
     def registrarse(self, nombres_entry, apellidos_entry, correo_entry, contrasena_entry):
         nombres = nombres_entry.get()
         apellidos = apellidos_entry.get()
