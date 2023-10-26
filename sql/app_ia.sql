@@ -14,7 +14,12 @@ CREATE TABLE usuarios (
     ('Ashley', 'Velásquez  Oporto', 'Ssssnie@gmail.com', '112211'),
     ('Sanji', 'Vinsmoke', '66wrw@gmail.com', '665566');*/
    
-   
+create table conversacion(
+    id_conversacion INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(50) NOT NULL,
+    respuestas TEXT,
+    palabras_clave VARCHAR(50) NOT NULL
+);
 -- Muestras
  
 select * from usuarios;
