@@ -1,9 +1,10 @@
 import tkinter as tk
-from tkinter import scrolledtext
+from tkinter import scrolledtext, font
 import re
 import random
-from login_ia import LoginApp
-from crud_ia import CrudApp
+
+user_entry = None
+chat_display = None
 
 def get_response(user_input):
     split_message = re.split(r'\s|[,:;.?!-_]\s*', user_input.lower())
@@ -54,53 +55,77 @@ def unknown():
     response = ['no entendí tu consulta', 'No estoy seguro de lo que quieres', 'Disculpa, ¿puedes intentarlo de nuevo?'][random.randrange(3)]
     return response
 
-def send_message():
-    user_input = user_entry.get()
+def send_message(user_input, message_type):
+    global user_entry
+    global chat_display
     response = get_response(user_input)
     chat_display.config(state=tk.NORMAL)
-    chat_display.insert(tk.END, f"You: {user_input}\n")
-    chat_display.insert(tk.END, f"Cerbot: {response}\n")
+
+    if message_type == 'user':
+        chat_display.insert(tk.END, f"You: {user_input}\n", 'user_font')
+    elif message_type == 'bot':
+        chat_display.insert(tk.END, f"Cerbot: {response}\n", 'bot_font')
+
     chat_display.config(state=tk.DISABLED)
     user_entry.delete(0, tk.END)
 
 def clear_chat():
+    global chat_display
     chat_display.config(state=tk.NORMAL)
     chat_display.delete(1.0, tk.END)
     chat_display.config(state=tk.DISABLED)
 
 def on_enter(event):
-    send_message()
+    user_input = user_entry.get()
+    send_message(user_input, 'user')
 
 def mostrar_ventana_chat():
+    global chat_display
+
+    def send_message():
+        user_input = user_entry.get()
+        response = get_response(user_input)
+        chat_display.config(state=tk.NORMAL)
+
+        chat_display.insert(tk.END, f"You: {user_input}\n", 'user_font')
+        chat_display.insert(tk.END, f"Cerbot: {response}\n", 'bot_font')
+
+        chat_display.config(state=tk.DISABLED)
+        user_entry.delete(0, tk.END)
+
+    root = tk.Tk()
     root.title("CERBOT")
 
-    # Ajusta el tamaño del área de chat
+    # Configuración de colores
+    fondo_crema = "#EDBBB4"
+    naranja_negrita = "#FF5733"
+
+    # Configuración de estilos
+    estilo = {
+        'user_font': font.Font(family='Verdana', size=9, weight='bold', underline=False, overstrike=False, slant='roman'),
+        'bot_font': font.Font(family='Impact', size=10, weight='normal', underline=False, overstrike=False, slant='roman')
+    }
+
+    chat_display = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20, font=("Arial", 9), bg=fondo_crema)
+    user_entry = tk.Entry(root, width=60, font=("Arial", 9))
+
+    send_button = tk.Button(root, text="Enviar", command=send_message, bg=naranja_negrita, fg='white')
+    clear_button = tk.Button(root, text="Limpiar chat", command=clear_chat, bg=naranja_negrita, fg='white')
+
+    chat_display.tag_configure('user_font', font=estilo['user_font'])
+    chat_display.tag_configure('bot_font', font=estilo['bot_font'])
+
     chat_display.config(state=tk.DISABLED)
     chat_display.pack()
 
     user_entry.pack()
 
-    send_button = tk.Button(root, text="Enviar", command=send_message)
     send_button.pack()
-
-    clear_button = tk.Button(root, text="Reiniciar", command=clear_chat)
     clear_button.pack()
 
-    # Vincula la tecla Enter al evento de enviar el mensaje
-    root.bind('<Return>', on_enter)
+    root.bind('<Return>', lambda event=None: send_message())
 
     root.mainloop()
 
 if __name__ == "__main__":
-    crud_app = CrudApp()
-    login_app = LoginApp(tk.Tk(), crud_app)
-    login_app.root.mainloop()
-    
-    if login_app.sesion_iniciada:          
-        root = tk.Tk()
-        chat_display = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20)
-        user_entry = tk.Entry(root, width=60)
-        send_button = tk.Button(root, text="Enviar", command=send_message)
-        clear_button = tk.Button(root, text="Reiniciar", command=clear_chat)
-        
-        mostrar_ventana_chat()
+    mostrar_ventana_chat()
