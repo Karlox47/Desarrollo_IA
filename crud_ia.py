@@ -10,11 +10,11 @@ class CrudApp:
     def connect_to_database(self):
         try:
             connection = mysql.connector.connect(
-                host='localhost',
-                database='app_ia',
-                user='root',
-                password=''
-            )
+                host='app-ia-1.c3cf7ysdloxz.sa-east-1.rds.amazonaws.com',
+                database='app-ia',
+                user='admin',
+                password='admin1234'
+        )
             if connection.is_connected():
                 print("Conectado a la base de datos")
                 return connection
