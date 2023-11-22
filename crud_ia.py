@@ -14,7 +14,7 @@ class CrudApp:
                 database='app-ia',
                 user='admin',
                 password='admin1234'
-            )
+        )
             if connection.is_connected():
                 print("Conectado a la base de datos")
                 return connection
