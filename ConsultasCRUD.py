@@ -1,7 +1,7 @@
 from DatabaseConnection import DatabaseConnection
 from mysql.connector import Error
 
-class CrudConsultas:
+class ConsultasCRUD:
     def __init__(self):
         self.connection = DatabaseConnection().connection
         self.cursor = self.connection.cursor()
@@ -12,9 +12,11 @@ class CrudConsultas:
             sql_select = "SELECT * FROM consultas"
             self.cursor.execute(sql_select)
             records = self.cursor.fetchall()
-
-            for row in records:
-                print(f"ID = {row[0]}, Consulta = {row[1]}, Código = {row[2]}, Palabra clave = {row[3]}\n")
+            
+            # for row in records:
+            #     print(f"ID = {row[0]}, Código = {row[1]}, Respuesta = {row[2]}, Palabra clave = {row[3]}\n")
+                
+            return records
         except Error as e:
             print(f"Error al mostrar: {e}")
     
@@ -31,8 +33,3 @@ class CrudConsultas:
             
         except Error as e:
             print(f"Error al obtener respuesta: {e}")
-            return "Error al obtener respuesta."
-
-a = CrudConsultas()
-a.leer()
-print(a.respuesta("proxima"))
