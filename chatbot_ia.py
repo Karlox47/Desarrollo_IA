@@ -2,7 +2,9 @@ import tkinter as tk
 from tkinter import scrolledtext, font
 import re
 import random
+from DatabaseConnection import DatabaseConnection
 
+db_consultas = DatabaseConnection()
 user_entry = None
 chat_display = None
 

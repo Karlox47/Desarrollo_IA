@@ -1,31 +1,13 @@
 import mysql.connector
 from mysql.connector import Error
-import getpass  # Para ocultar la contraseña al ingresarla
+import getpass
+from DatabaseConnection import DatabaseConnection  # Para ocultar la contraseña al ingresarla
 
 class CrudApp:
     def __init__(self):
         # Conexión a la base de datos MySQL
-        self.connection = self.connect_to_database()
-
-    def connect_to_database(self):
-        try:
-            connection = mysql.connector.connect(
-                host='app-ia-1.c3cf7ysdloxz.sa-east-1.rds.amazonaws.com',
-                database='app-ia',
-                user='admin',
-                password='admin1234'
-        )
-            if connection.is_connected():
-                print("Conectado a la base de datos")
-                return connection
-        except Error as e:
-            print(f"Error: {e}")
-            return None
-
-    def close_connection(self):
-        if self.connection.is_connected():
-            self.connection.close()
-            print("Conexión cerrada")
+        self.db = DatabaseConnection()
+        self.connection = self.db.connection
             
     def obtener_usuario_por_correo(self, correo):
         try:
