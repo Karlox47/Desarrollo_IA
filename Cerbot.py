@@ -1,59 +1,59 @@
-import tkinter as tk
-from tkinter import scrolledtext, font
 import re
 import random
 from ConsultasCRUD import ConsultasCRUD
 
-consultas_crud = ConsultasCRUD()
-user_entry = None
-chat_display = None
+class Cerbot:
+    def __init__(self):
+        self.consultas_crud = ConsultasCRUD()
+        self.user_entry = None
+        self.chat_display = None
 
-def get_response(user_input):
-    split_message = re.split(r'\s|[,:;.?!-_]\s*', user_input.lower())
-    response = check_all_messages(split_message)
-    return response
+    def get_response(self, user_input):
+        split_message = re.split(r'\s|[,:;.?!-_]\s*', user_input.lower())
+        response = self.check_all_messages(split_message)
+        return response
 
-def message_probability(user_message, recognized_words, single_response=False, required_word=[]):
-    message_certainty = 0
-    has_required_words = True
+    def message_probability(self, user_message, recognized_words, single_response=False, required_word=[]):
+        message_certainty = 0
+        has_required_words = True
 
-    for word in user_message:
-        if word in recognized_words:
-            message_certainty += 1
+        for word in user_message:
+            if word in recognized_words:
+                message_certainty += 1
 
-    percentage = float(message_certainty) / float(len(recognized_words))
+        percentage = float(message_certainty) / float(len(recognized_words))
 
-    for word in required_word:
-        if word not in user_message:
-            has_required_words = False
-            break
+        for word in required_word:
+            if word not in user_message:
+                has_required_words = False
+                break
 
-    if has_required_words or single_response:
-        return int(percentage * 100)
-    else:
-        return 0 
+        if has_required_words or single_response:
+            return int(percentage * 100)
+        else:
+            return 0 
 
-def check_all_messages(message):
-    highest_prob = {}
+    def check_all_messages(self, message):
+        highest_prob = {}
 
-    def response(bot_response, list_of_words, single_response=False, required_words=[]):
-        nonlocal highest_prob
-        highest_prob[bot_response] = message_probability(message, list_of_words, single_response, required_words)
+        def response(bot_response, list_of_words, single_response=False, required_words=[]):
+            nonlocal highest_prob
+            highest_prob[bot_response] = self.message_probability(message, list_of_words, single_response, required_words)
 
-    palabras_clave = []  
-    
-    for col in consultas_crud.leer():
-        palabras_clave.append(col[3])
-        if (col[0] != col[0]-1):
-            response(col[2], palabras_clave, single_response=True)
-    
-    best_match = max(highest_prob, key=highest_prob.get)
+        palabras_clave = []  
+        
+        for col in self.consultas_crud.leer():
+            palabras_clave.append(col[3])
+            if (col[0] != col[0]-1):
+                response(col[2], palabras_clave, single_response=True)
+        
+        best_match = max(highest_prob, key=highest_prob.get)
 
-    return unknown() if highest_prob[best_match] < 1 else best_match
+        return self.unknown() if highest_prob[best_match] < 1 else best_match
 
-def unknown():
-    response = ['no entendí tu consulta', 'No estoy seguro de lo que quieres', 'Disculpa, ¿puedes intentarlo de nuevo?'][random.randrange(3)]
-    return response
+    def unknown(self):
+        response = ['no entendí tu consulta', 'No estoy seguro de lo que quieres', 'Disculpa, ¿puedes intentarlo de nuevo?'][random.randrange(3)]
+        return response
 
 # def send_message(user_input, message_type):
 #     global user_entry
