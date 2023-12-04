@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-import getpass  # Para ocultar la contraseña al ingresarla
+import getpass  # Para ocultar la contraseña al ingresar
 
 class CrudApp:
     def __init__(self):
@@ -14,7 +14,7 @@ class CrudApp:
                 database='app-ia',
                 user='admin',
                 password='admin1234'
-        )
+            )
             if connection.is_connected():
                 print("Conectado a la base de datos")
                 return connection
@@ -26,7 +26,7 @@ class CrudApp:
         if self.connection.is_connected():
             self.connection.close()
             print("Conexión cerrada")
-            
+
     def obtener_usuario_por_correo(self, correo):
         try:
             cursor = self.connection.cursor()
@@ -37,29 +37,28 @@ class CrudApp:
         except Error as e:
             print(f"Error al obtener información del usuario: {e}")
             return None
-            
-            
-            
-#===============================================================================================================================================================================
-                                                                #REALIZANDO UN CRUD => CREATE READ UPDATE DELETE
-#===============================================================================================================================================================================
-    
-    
-    
-    # Crear usuarios
-    def insertar(self, nombres, apellidos, correo, contrasena):
+        
+    def verificar_correo_existente(self, correo):
+        try:
+            cursor = self.connection.cursor()
+            sql_select = "SELECT * FROM usuarios WHERE correo = %s"
+            cursor.execute(sql_select, (correo,))
+            user_data = cursor.fetchone()
+            return user_data is not None
+        except Error as e:
+            print(f"Error al verificar correo existente: {e}")
+            return False
+
+    def insertar(self, nombres, apellidos, correo, contraseña):
         try:
             cursor = self.connection.cursor()
             sql_insert = "INSERT INTO usuarios (nombres, apellidos, correo, contraseña) VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql_insert, (nombres, apellidos, correo, contrasena))
+            cursor.execute(sql_insert, (nombres, apellidos, correo, contraseña))
             self.connection.commit()
-            print("Usuario creado jaaa!!!")
+            print("Usuario creado con éxito.")
         except Error as e:
             print(f"Error al crear: {e}")
 
-
-
-    # Mostrar todos los usuarios
     def seleccionar(self):
         try:
             cursor = self.connection.cursor()
@@ -72,43 +71,37 @@ class CrudApp:
         except Error as e:
             print(f"Error al mostrar: {e}")
 
-
-
-    # Actualizar usuarios
     def actualizar(self):
-        idusuario = input("Ingrese el ID del usuario para actualizar: ")
+        id_usuario = input("Ingrese el ID del usuario para actualizar: ")
         try:
             cursor = self.connection.cursor()
-            cursor.execute(f"SELECT * FROM usuarios WHERE idusuarios = {idusuario}")
+            cursor.execute(f"SELECT * FROM usuarios WHERE id = {id_usuario}")
             user_data = cursor.fetchone()
 
             if user_data:
                 nuevos_nombres = input("Actualice Nombres: ")
                 nuevos_apellidos = input("Actualice Apellidos: ")
                 nuevo_correo = input("Actualice Correo: ")
-                nueva_contrasena = input("Actualice Contraseña: ")
+                nueva_contraseña = input("Actualice Contraseña: ")
 
-                sql_update = "UPDATE usuarios SET nombres = %s, apellidos = %s, correo = %s, contraseña = %s  WHERE idusuarios = %s"
-                cursor.execute(sql_update, (nuevos_nombres, nuevos_apellidos, nuevo_correo, nueva_contrasena, idusuario))
+                sql_update = "UPDATE usuarios SET nombres = %s, apellidos = %s, correo = %s, contraseña = %s  WHERE id = %s"
+                cursor.execute(sql_update, (nuevos_nombres, nuevos_apellidos, nuevo_correo, nueva_contraseña, id_usuario))
                 self.connection.commit()
                 print("Se actualizó con éxito.")
             else:
-                print(f"No se encontró ningún usuario con ID {idusuario}")
+                print(f"No se encontró ningún usuario con ID {id_usuario}")
         except Error as e:
             print(f"Error al actualizar: {e}")
 
-
-
-    # Eliminar usuario por ID
     def eliminar(self):
         id_usuario = input("Ingrese el ID del usuario que desea eliminar: ")
         try:
             cursor = self.connection.cursor()
-            cursor.execute(f"SELECT * FROM usuarios WHERE idusuarios = {id_usuario}")
+            cursor.execute(f"SELECT * FROM usuarios WHERE id = {id_usuario}")
             user_data = cursor.fetchone()
-            
+
             if user_data:
-                sql_delete = "DELETE FROM usuarios WHERE idusuarios = %s"
+                sql_delete = "DELETE FROM usuarios WHERE id = %s"
                 cursor.execute(sql_delete, (id_usuario,))
                 self.connection.commit()
                 print("Usuario eliminado.")
@@ -134,9 +127,9 @@ if __name__ == "__main__":
             nombres = input("Ingrese nombres: ")
             apellidos = input("Ingrese apellidos: ")
             correo = input("Ingrese correo: ")
-            contrasena = input("Ingrese contraseña: ")
+            contraseña = getpass.getpass("Ingrese contraseña: ")
             
-            app.insertar(nombres, apellidos, correo, contrasena)
+            app.insertar(nombres, apellidos, correo, contraseña)
         elif choice == "2":
             app.seleccionar()
         elif choice == "3":
