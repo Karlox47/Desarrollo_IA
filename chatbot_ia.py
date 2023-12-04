@@ -39,11 +39,11 @@ def check_all_messages(message):
         highest_prob[bot_response] = message_probability(message, list_of_words, single_response, required_words)
 
     response('¡Hola Soy CerBot! ¿En qué puedo ayudarte?', ['hola', 'hi', 'saludos', 'buenas'], single_response=True)
-    response('La próxima clase es el Miercoles [7:00 am - 10:00 am].', ['proxima','clase', 'siguiente', 'horario'], single_response=True)
+    response('La próxima clase es el Miércoles [7:00 am - 10:00 am].', ['proxima','clase', 'siguiente', 'horario'], single_response=True)
     response('Los documentos o archivos del curso están disponibles en la plataforma de "certus".', ['documentos','archivos', 'donde'], single_response=True)
     response('Puedes encontrar ejemplos de tareas o proyectos anteriores en la plataforma de "Certus".', ['dudas', 'tarea','proyecto','donde'], single_response=True)
     response('Tu desempeño se evaluará a través de tareas, proyectos, exámenes y participación.', ['evaluacion','evaluar', 'calificación', 'calificar', 'como se evalua'], single_response=True)
-    response('Tus notas las puedes encontrar ingresando al intranet, en la seccion ver mis notas intranet.', ['ver','calificacion', 'notas', 'donde','puedo'], single_response=True)
+    response('Tus notas las puedes encontrar ingresando al intranet, en la sección ver mis notas intranet.', ['ver','calificacion', 'notas', 'donde','puedo'], single_response=True)
     response('Sí, tenemos una comunidad en línea para estudiantes. Únete y participa.', ['grupo',' estudio', 'comunidad','estudiantes', ' unirme','donde'], single_response=True)
     response('Estamos aquí para apoyarte en el aprendizaje de tu Curso de Inteligencia Artificial. ¡Buena suerte en tus estudios!', ['gracias', 'adios', 'despedida'], single_response=True)
 
@@ -98,7 +98,8 @@ def mostrar_ventana_chat():
 
     # Configuración de colores
     fondo_crema = "#EDBBB4"
-    naranja_negrita = "#FF5733"
+    azul_mate = "#3399CC"
+    blanco = "#FFFFFF"
 
     # Configuración de estilos
     estilo = {
@@ -109,19 +110,19 @@ def mostrar_ventana_chat():
     chat_display = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20, font=("Arial", 9), bg=fondo_crema)
     user_entry = tk.Entry(root, width=60, font=("Arial", 9))
 
-    send_button = tk.Button(root, text="Enviar", command=send_message, bg=naranja_negrita, fg='white')
-    clear_button = tk.Button(root, text="Limpiar chat", command=clear_chat, bg=naranja_negrita, fg='white')
+    send_button = tk.Button(root, text="Enviar", command=send_message, bg=azul_mate, fg=blanco)
+    clear_button = tk.Button(root, text="Limpiar chat", command=clear_chat, bg=azul_mate, fg=blanco)
 
-    chat_display.tag_configure('user_font', font=estilo['user_font'])
-    chat_display.tag_configure('bot_font', font=estilo['bot_font'])
+    chat_display.tag_configure('user_font', font=estilo['user_font'], foreground='black')
+    chat_display.tag_configure('bot_font', font=estilo['bot_font'], foreground='black')
 
     chat_display.config(state=tk.DISABLED)
     chat_display.pack()
 
     user_entry.pack()
 
-    send_button.pack()
-    clear_button.pack()
+    send_button.pack(side=tk.LEFT, padx=5, pady=5)
+    clear_button.pack(side=tk.RIGHT, padx=5, pady=5)
 
     root.bind('<Return>', lambda event=None: send_message())
 
