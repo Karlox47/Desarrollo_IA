@@ -2,18 +2,20 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from crud_ia import CrudApp
-from chatbot_ia import mostrar_ventana_chat
 from ttkthemes import ThemedStyle
 
+from InterfazCerbot import InterfazCerbot
+from db.UsuariosCRUD import UsuariosCRUD
+
 class LoginApp:
-    def __init__(self, root, crud_instance):
+    def __init__(self, root):
         self.root = root
         self.root.title("Inicio de Sesión")
         self.root.geometry("500x450")
-        self.crud_instance = crud_instance
+        self.usuariosCRUD = UsuariosCRUD()
+        self.interfazCerbot = InterfazCerbot()
 
-        original_bg_image = Image.open("F:/Desarrollo_IA/images/ANOTHER.jpg")
+        original_bg_image = Image.open("images/ANOTHER.jpg")
         resized_bg_image = original_bg_image.resize((500, 450), Image.LANCZOS)
         self.bg_photo = ImageTk.PhotoImage(resized_bg_image)
 
@@ -23,7 +25,7 @@ class LoginApp:
         bg_label = tk.Label(frame, image=self.bg_photo)
         bg_label.place(relwidth=1, relheight=1)
 
-        self.logo_image = tk.PhotoImage(file="F:/Desarrollo_IA/images/bot3.png")
+        self.logo_image = tk.PhotoImage(file="images/bot3.png")
 
         self.logo_label = tk.Label(frame, image=self.logo_image)
         self.logo_label.grid(row=0, column=0, columnspan=2, pady=5)
@@ -42,6 +44,9 @@ class LoginApp:
         tk.Button(frame, text="Iniciar Sesión", command=self.iniciar_sesion, bg='lightblue', font=('Arial', 12, 'bold')).grid(row=3, column=0, columnspan=2, pady=10)  
         tk.Button(frame, text="Registrarse", command=self.mostrar_registro, bg='lightblue', font=('Arial', 12, 'bold')).grid(row=4, column=0, columnspan=2, pady=5)
 
+        self.correo_entry.delete(0, tk.END)
+        self.contrasena_entry.delete(0, tk.END)
+        
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
         frame.rowconfigure(0, weight=1)
@@ -54,12 +59,12 @@ class LoginApp:
         correo = self.correo_entry.get()
         contrasena = self.contrasena_entry.get()
 
-        usuario = self.crud_instance.obtener_usuario_por_correo(correo)
-
+        usuario = self.usuariosCRUD.obtener_usuario_por_correo(correo)
+        
         if usuario and usuario[4] == contrasena:
             messagebox.showinfo("Inicio de Sesión", "Inicio de sesión exitoso. ¡Bienvenido!")
-            self.root.destroy()
-            mostrar_ventana_chat()
+            self.root.withdraw()
+            self.interfazCerbot.mostrar_ventana_chat(usuario, self.root)
         else:
             messagebox.showerror("Inicio de Sesión", "Inicio de sesión fallido. Verifica tu correo y contraseña.")
 
@@ -74,11 +79,12 @@ class RegistroApp:
         self.root.title("Registro de Usuario")
         self.root.geometry("600x650")
         self.login_instance = login_instance
+        self.usuariosCRUD = UsuariosCRUD()
 
         frame = ttk.Frame(root)
         frame.pack(expand=True, fill='both')
 
-        original_bg_image = Image.open("F:/Desarrollo_IA/images/ANOTHER.jpg")
+        original_bg_image = Image.open("images/ANOTHER.jpg")
         resized_bg_image = original_bg_image.resize((600, 650), Image.LANCZOS)
         self.bg_photo = ImageTk.PhotoImage(resized_bg_image)
         
@@ -86,7 +92,7 @@ class RegistroApp:
         bg_label.place(relwidth=1, relheight=1)
 
         try:
-            self.logo_image = tk.PhotoImage(file="F:/Desarrollo_IA/images/login2.png")
+            self.logo_image = tk.PhotoImage(file="images/login2.png")
             logo_label = tk.Label(frame, image=self.logo_image)
             logo_label.grid(row=0, column=0, columnspan=2, pady=2)
         except Exception as e:
@@ -131,13 +137,13 @@ class RegistroApp:
             messagebox.showerror("Error de Registro", "Todos los campos deben ser llenados.")
             return
 
-        self.login_instance.crud_instance.insertar(nombres, apellidos, correo, contrasena)
-        messagebox.showinfo("Registro Exitoso", "¡Usuario registrado con éxito!")
+        if self.usuariosCRUD.insertar(nombres, apellidos, correo, contrasena):
+            messagebox.showinfo("Registro Exitoso", "¡Usuario registrado con éxito!")
+            self.root.destroy()
 
 if __name__ == "__main__":
     menu = tk.Tk()
-    crud_app = CrudApp()
-    login_app = LoginApp(menu, crud_app)
+    login_app = LoginApp(menu)
 
     style = ThemedStyle(menu)
     style.set_theme("radiance")

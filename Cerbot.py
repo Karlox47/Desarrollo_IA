@@ -1,12 +1,14 @@
 import re
 import random
-from ConsultasCRUD import ConsultasCRUD
+import tkinter as tk
+from tkinter import font, scrolledtext
+import tkinter
+from db.ConsultasCRUD import ConsultasCRUD
 
 class Cerbot:
     def __init__(self):
-        self.consultas_crud = ConsultasCRUD()
-        self.user_entry = None
-        self.chat_display = None
+        self.consultasCRUD = ConsultasCRUD()
+        self.consultas = self.consultasCRUD.leer()
 
     def get_response(self, user_input):
         split_message = re.split(r'\s|[,:;.?!-_]\s*', user_input.lower())
@@ -35,30 +37,42 @@ class Cerbot:
 
     def check_all_messages(self, message):
         highest_prob = {}
-
+        palabras_clave = []
+        codigo = 1
+        
         def response(bot_response, list_of_words, single_response=False, required_words=[]):
             nonlocal highest_prob
             highest_prob[bot_response] = self.message_probability(message, list_of_words, single_response, required_words)
-
-        palabras_clave = []  
         
-        for col in self.consultas_crud.leer():
-            palabras_clave.append(col[3])
-            if (col[0] != col[0]-1):
-                response(col[2], palabras_clave, single_response=True)
+        for row in self.consultas:
+            if (row[1] != 10):            
+                if (row[1] != codigo):
+                    response(respuesta, palabras_clave, single_response=True)
+                    # print(f"\n{respuesta} - {palabras_clave}")
+                    palabras_clave = []
+                    codigo = row[1]
+                
+                palabras_clave.append(row[3])
+                respuesta = row[2]
         
         best_match = max(highest_prob, key=highest_prob.get)
 
         return self.unknown() if highest_prob[best_match] < 1 else best_match
 
     def unknown(self):
-        response = ['no entendí tu consulta', 'No estoy seguro de lo que quieres', 'Disculpa, ¿puedes intentarlo de nuevo?'][random.randrange(3)]
+        consulta_desconocida = []
+        
+        for row in self.consultas:
+            if row[1] == 10:
+                consulta_desconocida.append(row[2])
+            
+        response = consulta_desconocida[random.randrange(3)]
         return response
 
 # def send_message(user_input, message_type):
 #     global user_entry
 #     global chat_display
-#     response = get_response(user_input)
+#     response = a.get_response(user_input)
 #     chat_display.config(state=tk.NORMAL)
 
 #     if message_type == 'user':
@@ -73,7 +87,7 @@ class Cerbot:
 #     global chat_display
 #     chat_display.config(state=tk.NORMAL)
 #     chat_display.delete(1.0, tk.END)
-#     chat_display.config(state=tk.DISABLED)
+#     chat_display.config(state=tkinter.DISABLED)
 
 # def on_enter(event):
 #     user_input = user_entry.get()
@@ -84,7 +98,7 @@ class Cerbot:
 
 #     def send_message():
 #         user_input = user_entry.get()
-#         response = get_response(user_input)
+#         response = a.get_response(user_input)
 #         chat_display.config(state=tk.NORMAL)
 
 #         chat_display.insert(tk.END, f"You: {user_input}\n", 'user_font')
@@ -97,7 +111,7 @@ class Cerbot:
 #     root.title("CERBOT")
 
 #     # Configuración de colores
-#     fondo_crema = "#EDBBB4"
+#     fondo_crema = "#d5d5d5"
 #     naranja_negrita = "#FF5733"
 
 #     # Configuración de estilos
@@ -128,4 +142,5 @@ class Cerbot:
 #     root.mainloop()
 
 # if __name__ == "__main__":
+#     a = Cerbot()
 #     mostrar_ventana_chat()

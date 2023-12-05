@@ -1,9 +1,9 @@
 import mysql.connector
 from mysql.connector import Error
 import getpass
-from DatabaseConnection import DatabaseConnection  # Para ocultar la contraseña al ingresarla
+from .DatabaseConnection import DatabaseConnection  # Para ocultar la contraseña al ingresarla
 
-class CrudApp:
+class UsuariosCRUD:
     def __init__(self):
         # Conexión a la base de datos MySQL
         self.db = DatabaseConnection()
@@ -15,6 +15,7 @@ class CrudApp:
             sql_select = "SELECT * FROM usuarios WHERE correo = %s"
             cursor.execute(sql_select, (correo,))
             user_data = cursor.fetchone()
+            
             return user_data
         except Error as e:
             print(f"Error al obtener información del usuario: {e}")
@@ -25,9 +26,6 @@ class CrudApp:
 #===============================================================================================================================================================================
                                                                 #REALIZANDO UN CRUD => CREATE READ UPDATE DELETE
 #===============================================================================================================================================================================
-    
-    
-    
     # Crear usuarios
     def insertar(self, nombres, apellidos, correo, contrasena):
         try:
@@ -36,10 +34,9 @@ class CrudApp:
             cursor.execute(sql_insert, (nombres, apellidos, correo, contrasena))
             self.connection.commit()
             print("Usuario creado jaaa!!!")
+            return True
         except Error as e:
             print(f"Error al crear: {e}")
-
-
 
     # Mostrar todos los usuarios
     def seleccionar(self):
@@ -53,8 +50,6 @@ class CrudApp:
                 print(f"ID = {row[0]}, Nombres = {row[1]}, Apellidos = {row[2]}, Correo = {row[3]}, Contraseña = {row[4]}\n")
         except Error as e:
             print(f"Error al mostrar: {e}")
-
-
 
     # Actualizar usuarios
     def actualizar(self):
@@ -79,8 +74,6 @@ class CrudApp:
         except Error as e:
             print(f"Error al actualizar: {e}")
 
-
-
     # Eliminar usuario por ID
     def eliminar(self):
         id_usuario = input("Ingrese el ID del usuario que desea eliminar: ")
@@ -99,35 +92,35 @@ class CrudApp:
         except Error as e:
             print(f"Error al eliminar: {e}")
 
-if __name__ == "__main__":
-    app = CrudApp()
+# if __name__ == "__main__":
+#     app = CrudApp()
 
-    while True:
-        print("\nMenu:")
-        print("1. Insertar")
-        print("2. Seleccionar")
-        print("3. Actualizar")
-        print("4. Eliminar")
-        print("5. Salir")
+#     while True:
+#         print("\nMenu:")
+#         print("1. Insertar")
+#         print("2. Lista de usuarios")
+#         print("3. Actualizar")
+#         print("4. Eliminar")
+#         print("5. Salir")
 
-        choice = input("Ingrese el número de la opción que desea: ")
+#         choice = input("Ingrese el número de la opción que desea: ")
 
-        if choice == "1":
-            nombres = input("Ingrese nombres: ")
-            apellidos = input("Ingrese apellidos: ")
-            correo = input("Ingrese correo: ")
-            contrasena = input("Ingrese contraseña: ")
+#         if choice == "1":
+#             nombres = input("Ingrese nombres: ")
+#             apellidos = input("Ingrese apellidos: ")
+#             correo = input("Ingrese correo: ")
+#             contrasena = input("Ingrese contraseña: ")
             
-            app.insertar(nombres, apellidos, correo, contrasena)
-        elif choice == "2":
-            app.seleccionar()
-        elif choice == "3":
-            app.actualizar()
-        elif choice == "4":
-            app.eliminar()
-        elif choice == "5":
-            app.close_connection()
-            print("Saliendo del programa. ¡Hasta luego!")
-            break
-        else:
-            print("Opción no válida.")
+#             app.insertar(nombres, apellidos, correo, contrasena)
+#         elif choice == "2":
+#             app.seleccionar()
+#         elif choice == "3":
+#             app.actualizar()
+#         elif choice == "4":
+#             app.eliminar()
+#         elif choice == "5":
+#             app.close_connection()
+#             print("Saliendo del programa. ¡Hasta luego!")
+#             break
+#         else:
+#             print("Opción no válida.")
