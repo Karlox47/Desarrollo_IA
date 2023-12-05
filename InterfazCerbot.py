@@ -132,10 +132,10 @@ class InterfazCerbot:
             print(f"El usuario {usuario[1]} {usuario[2]}, no tiene mensajes previos.")
         else:    
             for historial in usuarioHistorial:
-                respuesta = self.cerbot.consultasCRUD.getConsultaByID(0)
+                respuesta = self.cerbot.consultasCRUD.getConsultaByID(historial[4])
                 print(f"Consulta: {historial[1]} - Respuesta: {respuesta[2]} - Fecha: {historial[2]}")
 
-if __name__ == "__main__":
-    interfaz = InterfazCerbot()
-    usuario = [1, "Rodrigo", "Sihues Yanqui", "74663928@certus.edu.pe", "1234"]
-    interfaz.mostrar_ventana_chat(usuario)
+# if __name__ == "__main__":
+#     interfaz = InterfazCerbot()
+#     usuario = [1, "Rodrigo", "Sihues Yanqui", "74663928@certus.edu.pe", "1234"]
+#     interfaz.mostrar_ventana_chat(usuario)
