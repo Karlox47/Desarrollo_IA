@@ -25,11 +25,11 @@ class UsuariosCRUD:
                                                                 #REALIZANDO UN CRUD => CREATE READ UPDATE DELETE
 #===============================================================================================================================================================================
     # Crear usuarios
-    def insertar(self, nombres, apellidos, correo, contrasena):
+    def insertar(self, nombres, apellidos, correo, contraseña):
         try:
             cursor = self.connection.cursor()
-            sql_insert = "INSERT INTO usuarios (nombres, apellidos, correo, contrasena) VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql_insert, (nombres, apellidos, correo, contrasena))
+            sql_insert = "INSERT INTO usuarios (nombres, apellidos, correo, contraseña) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql_insert, (nombres, apellidos, correo, contraseña))
             self.connection.commit()
             print("Usuario creado jaaa!!!")
             return True
@@ -61,10 +61,10 @@ class UsuariosCRUD:
                 nuevos_nombres = input("Actualice Nombres: ")
                 nuevos_apellidos = input("Actualice Apellidos: ")
                 nuevo_correo = input("Actualice Correo: ")
-                nueva_contrasena = input("Actualice Contraseña: ")
+                nueva_contraseña = input("Actualice Contraseña: ")
 
-                sql_update = "UPDATE usuarios SET nombres = %s, apellidos = %s, correo = %s, contrasena = %s  WHERE id = %s"
-                cursor.execute(sql_update, (nuevos_nombres, nuevos_apellidos, nuevo_correo, nueva_contrasena, id_usuario))
+                sql_update = "UPDATE usuarios SET nombres = %s, apellidos = %s, correo = %s, contraseña = %s  WHERE id = %s"
+                cursor.execute(sql_update, (nuevos_nombres, nuevos_apellidos, nuevo_correo, nueva_contraseña, id_usuario))
                 self.connection.commit()
                 print("Se actualizó con éxito.")
             else:
@@ -107,9 +107,9 @@ class UsuariosCRUD:
 #             nombres = input("Ingrese nombres: ")
 #             apellidos = input("Ingrese apellidos: ")
 #             correo = input("Ingrese correo: ")
-#             contrasena = input("Ingrese contrasena: ")
+#             contraseña = input("Ingrese contraseña: ")
             
-#             app.insertar(nombres, apellidos, correo, contrasena)
+#             app.insertar(nombres, apellidos, correo, contraseña)
 #         elif choice == "2":
 #             app.seleccionar()
 #         elif choice == "3":
