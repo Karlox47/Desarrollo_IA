@@ -140,7 +140,7 @@ class InterfazCerbot:
 #     usuario = [1, "Rodrigo", "Sihues Yanqui", "74663928@certus.edu.pe", "1234"]
 #     interfaz.mostrar_ventana_chat(usuario)
 
-
+## modo beta :v
 class InterfazHistorial(tk.Tk):
     def __init__(self):
         super().__init__()
