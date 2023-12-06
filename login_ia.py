@@ -42,9 +42,6 @@ class LoginApp:
 
         tk.Button(frame, text="Iniciar Sesión", command=self.iniciar_sesion, bg='lightblue', font=('Arial', 12, 'bold')).grid(row=3, column=0, columnspan=3, pady=10)  
         tk.Button(frame, text="Registrarse", command=self.mostrar_registro, bg='lightblue', font=('Arial', 12, 'bold')).grid(row=4, column=0, columnspan=3, pady=5)
-
-        self.correo_entry.delete(0, tk.END)
-        self.contraseña_entry.delete(0, tk.END)
         
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
@@ -62,6 +59,8 @@ class LoginApp:
         
         if usuario and usuario[4] == contraseña:
             messagebox.showinfo("Inicio de Sesión", "Inicio de sesión exitoso. ¡Bienvenido!")
+            self.correo_entry.delete(0, tk.END)
+            self.contraseña_entry.delete(0, tk.END)
             self.root.withdraw()
             self.interfazCerbot.mostrar_ventana_chat(usuario, self.root)
         else:

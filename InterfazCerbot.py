@@ -124,16 +124,58 @@ class InterfazCerbot:
     def verHistorial(self, usuario):
         usuarioHistorial = []
         
+        root = tk.Tk()
+        root.title("Mi historial de consultas")
+        
+        # Fila 1: Nombre de usuario, espacio vacío, Salir de sesión
+        frame_user = ttk.Frame(root, padding=(5, 5, 5, 5))
+        label_username = ttk.Label(frame_user, text=f"{usuario[1]} {usuario[2]}")
+        btn_logout = ttk.Button(frame_user, text="Regresar", command= root.destroy)
+        
+        label_username.grid(row=0, column=0)
+        frame_user.grid_columnconfigure(1, weight=1) # Espacio vacío
+        btn_logout.grid(row=0, column=2)
+
+        frame_user.pack(fill="x") # Expandir esta fila de forma horizontal
+
+        # Fila 2: Conversación y hora asociada
+        frame_chat = ttk.Frame(root)
+        historial_display = ttk.Scrollbar(frame_chat)
+
+        # Treeview para mostrar la conversación
+        tree_chat = ttk.Treeview(frame_chat, columns=("Consultas", "Respuestas de Cerbot", "Fechas"), show="headings", height=20, yscrollcommand=historial_display.set)
+        tree_chat.column("Consultas", width=200)
+        tree_chat.column("Respuestas de Cerbot", width=500)
+        tree_chat.column("Fechas", width=130)
+
+        # Configuración de encabezados
+        tree_chat.heading("Consultas", text="Consultas")
+        tree_chat.heading("Respuestas de Cerbot", text="Respuestas de Cerbot")
+        tree_chat.heading("Fechas", text="Fechas")
+
+        # Configuración de scrollbar
+        historial_display.config(command=tree_chat.yview)
+        historial_display.pack(side="right", fill="y")
+
+        # Empacar el Treeview
+        tree_chat.pack(expand=True, fill="both")
+        frame_chat.pack(expand=True, fill="both")
+
         for row in self.historial.leerHistorial():
             if usuario[0] == row[3]:
-                usuarioHistorial.append(row)
+                usuarioHistorial.insert(0, row)
         
         if usuarioHistorial == []:
             print(f"El usuario {usuario[1]} {usuario[2]}, no tiene mensajes previos.")
-        else:    
+        else:
             for historial in usuarioHistorial:
                 respuesta = self.cerbot.consultasCRUD.getConsultaByID(historial[4])
-                print(f"Consulta: {historial[1]} - Respuesta: {respuesta[2]} - Fecha: {historial[2]}")
+                
+                tree_chat.insert("", tk.END, values=(historial[1], respuesta[2], historial[2]))
+                
+                # print(f"Consulta: {historial[1]} - Respuesta: {respuesta[2]} - Fecha: {historial[2]}")
+                
+        root.mainloop()
 
 # if __name__ == "__main__":
 #     interfaz = InterfazCerbot()
