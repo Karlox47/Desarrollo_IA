@@ -181,3 +181,69 @@ class InterfazCerbot:
 #     interfaz = InterfazCerbot()
 #     usuario = [1, "Rodrigo", "Sihues Yanqui", "74663928@certus.edu.pe", "1234"]
 #     interfaz.mostrar_ventana_chat(usuario)
+
+## modo beta :v
+class InterfazHistorial(tk.Tk):
+    def __init__(self):
+        super().__init__()
+
+        self.title("Historial de Consultas")
+        self.geometry("500x400")
+
+        # Configuración de colores
+        fondo_crema = "#EDBBB4"  # Color crema
+        azul_mate = "#3399CC"    # Azul claro
+        blanco = "#FFFFFF"       # Blanco
+        black = "#000000"        #negro
+        azure = "#F0FFFF"        #sky
+        red = "#A52A2A"            #red
+        
+
+        self.configure(bg=azul_mate)  # Fondo de la ventana
+
+        self.style = ttk.Style(self)
+        self.style.configure("TLabel", font=("Verdana", 12), background=azul_mate, foreground='black')
+        self.style.configure("TButton", font=("Verdana", 12), background=black, foreground=black)
+        self.style.configure("TEntry", font=("Verdana", 12), background=azul_mate)
+
+        self.label = ttk.Label(self, text="Ingrese el usuario:")
+        self.label.pack(pady=10)
+
+        self.entry = ttk.Entry(self)
+        self.entry.pack(pady=10)
+
+        self.button = ttk.Button(self, text="Ver Historial", command=self.mostrar_historial)
+        self.button.pack(pady=10)
+
+        self.text_area = tk.Text(self, height=10, width=50, bg=azure, font=("Arial", 9))
+        self.text_area.pack(pady=10)
+
+    def mostrar_historial(self):
+        usuario = self.entry.get()
+        usuarioHistorial = []
+
+        # Aquí iría tu lógica actual para obtener el historial
+        # Puedes adaptar tu función verHistorial para trabajar con la lista usuarioHistorial
+
+        # Simulación de datos para probar la interfaz
+        usuarioHistorial = [
+            ("Consulta1", "Respuesta1", "Fecha1"),
+            ("Consulta2", "Respuesta2", "Fecha2"),
+        ]
+
+        self.text_area.delete(1.0, tk.END)  # Limpiar el área de texto antes de mostrar nuevo historial
+
+        if usuarioHistorial == []:
+            self.text_area.insert(tk.END, f"El usuario {usuario} no tiene mensajes previos.", "warning")
+        else:
+            for historial in usuarioHistorial:
+                self.text_area.insert(tk.END, f"Consulta: {historial[0]}\n", "consulta")
+                self.text_area.insert(tk.END, f"Respuesta: {historial[1]}\n", "respuesta")
+                self.text_area.insert(tk.END, f"Fecha: {historial[2]}\n\n", "fecha")
+
+    def run(self):
+        self.mainloop()
+
+if __name__ == "__main__":
+    app = InterfazHistorial()
+    app.run()
