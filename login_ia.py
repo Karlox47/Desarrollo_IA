@@ -91,7 +91,11 @@ class RegistroApp:
         bg_label.place(relwidth=1, relheight=1)
 
         try:
-            self.logo_image = tk.PhotoImage(file="images/login2.png")
+            original_logo_image = Image.open("images/USER2.png")
+            # Ajusta el tamaño deseado, por ejemplo, 100x100 píxeles
+            resized_logo_image = original_logo_image.resize((200, 200), Image.LANCZOS)
+            self.logo_image = ImageTk.PhotoImage(resized_logo_image)
+
             logo_label = tk.Label(frame, image=self.logo_image)
             logo_label.grid(row=0, column=0, columnspan=2, pady=2)
         except Exception as e:
@@ -147,4 +151,4 @@ if __name__ == "__main__":
     style = ThemedStyle(menu)
     style.set_theme("radiance")
 
-    menu.mainloop()
+    menu.mainloop() 
