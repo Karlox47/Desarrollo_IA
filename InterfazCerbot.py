@@ -124,6 +124,24 @@ class InterfazCerbot:
     def verHistorial(self, usuario):
         usuarioHistorial = []
         
+        rootHistorial = tk.Tk()
+        rootHistorial.title("Mi Historial de Conversaciones")
+
+        frame = ttk.Frame(rootHistorial)
+        frame.pack(expand=True, fill='both')
+
+        # Fila 1
+        nombre_usuario = text=f"{usuario[1]} {usuario[2]}"
+        ttk.Label(frame, text=nombre_usuario).grid(row=0, column=0, pady=5, padx=5)
+        
+        btn_regresar = ttk.Button(frame, text="Regresar", command=rootHistorial.destroy)
+        btn_regresar.grid(row=0, column=1, pady=5)
+
+        # Fila 2
+        ttk.Label(frame, text="Consulta").grid(row=1, column=0, pady=5, padx=5)
+        ttk.Label(frame, text="Respuesta de Cerbot").grid(row=1, column=1, pady=5, padx=5)
+        ttk.Label(frame, text="Hora").grid(row=1, column=2, pady=5, padx=5)
+
         for row in self.historial.leerHistorial():
             if usuario[0] == row[3]:
                 usuarioHistorial.append(row)
@@ -131,9 +149,19 @@ class InterfazCerbot:
         if usuarioHistorial == []:
             print(f"El usuario {usuario[1]} {usuario[2]}, no tiene mensajes previos.")
         else:    
+            fila = 2
             for historial in usuarioHistorial:
                 respuesta = self.cerbot.consultasCRUD.getConsultaByID(historial[4])
-                print(f"Consulta: {historial[1]} - Respuesta: {respuesta[2]} - Fecha: {historial[2]}")
+                
+                ttk.Label(frame, text=historial[1]).grid(row=fila, column=0, pady=5, padx=5)
+                ttk.Label(frame, text=respuesta[2]).grid(row=fila, column=1, pady=5, padx=5)
+                ttk.Label(frame, text=historial[2]).grid(row=fila, column=2, pady=5, padx=5)
+                
+                fila += 1
+                
+                # print(f"Consulta: {historial[1]} - Respuesta: {respuesta[2]} - Fecha: {historial[2]}")
+                
+        rootHistorial.mainloop()
 
 # if __name__ == "__main__":
 #     interfaz = InterfazCerbot()
