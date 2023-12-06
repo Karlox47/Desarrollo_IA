@@ -99,7 +99,7 @@ class InterfazCerbot:
 
         # Fila 3: Entrada del usuario
         frame_input = ttk.Frame(root, padding=(5, 5, 5, 5))
-        user_entry = ttk.Entry(frame_input, width=50)
+        user_entry = ttk.Entry(frame_input, width=100)
         btn_send = ttk.Button(frame_input, text="Enviar", command=lambda: send_message())
 
         user_entry.grid(row=0, column=0)
