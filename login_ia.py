@@ -78,7 +78,9 @@ class RegistroApp:
         self.root.geometry("600x650")
         self.login_instance = login_instance
         self.usuariosCRUD = UsuariosCRUD()
-
+#=======================================================================================
+        
+#=======================================================================================
         frame = ttk.Frame(root)
         frame.pack(expand=True, fill='both')
 
@@ -128,7 +130,9 @@ class RegistroApp:
         frame.rowconfigure(3, weight=1)
         frame.rowconfigure(4, weight=1)
         frame.rowconfigure(5, weight=1)
+#==========================================================================================
 
+#==========================================================================================
     def registrarse(self, nombres_entry, apellidos_entry, correo_entry, contraseña_entry):
         nombres = nombres_entry.get()
         apellidos = apellidos_entry.get()
@@ -142,7 +146,9 @@ class RegistroApp:
         if self.usuariosCRUD.insertar(nombres, apellidos, correo, contraseña):
             messagebox.showinfo("Registro Exitoso", "¡Usuario registrado con éxito!")
             self.root.destroy()
+#==========================================================================================
 
+#==========================================================================================
 if __name__ == "__main__":
     menu = tk.Tk()
     login_app = LoginApp(menu)
